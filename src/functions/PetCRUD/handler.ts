@@ -13,7 +13,7 @@ const add: ValidatedEventAPIGatewayProxyEvent<typeof addPetSchema> = async (
 	event
 ) => {
 	const petData = event.body;
-	const response = await dynamo.savePet(petData, 'PetTable1');
+	const response = await dynamo.savePet(petData, 'PetPetTable1');
 	return formatJSONResponse({
 		Pet: response,
 	});
@@ -31,7 +31,7 @@ const find: ValidatedEventAPIGatewayProxyEvent<typeof addPetSchema> = async (
 ) => {
 	const { id } = event.pathParameters;
 	console.log(id);
-	const response = await dynamo.getPet(id, 'PetTable1');
+	const response = await dynamo.getPet(id, 'PetPetTable1');
 
 	return formatJSONResponse({
 		Pet: response,
@@ -49,7 +49,7 @@ const deletepet: ValidatedEventAPIGatewayProxyEvent<typeof addPetSchema> =
 	async (event) => {
 		const { id } = event.pathParameters;
 		console.log(id);
-		const response = await dynamo.deletePet(id, 'PetTable1');
+		const response = await dynamo.deletePet(id, 'PetPetTable1');
 
 		return formatJSONResponse({
 			Pet: response,
@@ -67,7 +67,7 @@ const findWithTags: ValidatedEventAPIGatewayProxyEvent<typeof addPetSchema> =
 	async (event) => {
 		const { limit, tags } = event.queryStringParameters;
 
-		const response = await dynamo.getWithTags(limit, tags, 'PetTable1');
+		const response = await dynamo.getWithTags(limit, tags, 'PetPetTable1');
 
 		return formatJSONResponse({
 			Pet: response,

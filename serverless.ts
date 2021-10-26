@@ -3,12 +3,11 @@ import type { AWS } from '@serverless/typescript';
 import {addPet, findPet, deletePet, findPetWithTags} from '@functions/index';
 
 const serverlessConfiguration: AWS = {
-  service: 'aws-serverless-dynamodb-crud-task',
-  frameworkVersion: '2',
-  custom: {
+	service: 'aws-serverless-dynamodb-crud-task',
+	frameworkVersion: '2',
+	custom: {
 		dynamodb: {
 			stages: ['dev'],
-			region: 'eu-west-2',
 			start: {
 				port: 8000,
 				migrate: true,
@@ -29,29 +28,43 @@ const serverlessConfiguration: AWS = {
 			platform: 'node',
 		},
 	},
-  plugins: ['serverless-esbuild', 'serverless-dynamodb-local',
-  'serverless-offline'],
-  provider: {
-    name: 'aws',
-    runtime: 'nodejs14.x',
-    apiGateway: {
-      minimumCompressionSize: 1024,
-      shouldStartNameWithService: true,
-    },
-    environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-    },
-    lambdaHashingVersion: '20201221',
-  },
-  // import the function via paths
-  functions: { addPet , findPet, deletePet, findPetWithTags},
-  resources: {
+	plugins: [
+		'serverless-esbuild',
+		'serverless-dynamodb-local',
+		'serverless-offline',
+	],
+	provider: {
+		name: 'aws',
+		runtime: 'nodejs14.x',
+		apiGateway: {
+			minimumCompressionSize: 1024,
+			shouldStartNameWithService: true,
+		},
+		environment: {
+			AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+			NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+		},
+		lambdaHashingVersion: '20201221',
+		region: 'eu-west-2',
+		iamRoleStatements: [
+			{
+				'Effect': 'Allow',
+				'Action': ['dynamodb:*'],
+				'Resource':
+					'arn:aws:dynamodb:eu-west-2:218767131295:table/PetPetTable1',
+			},
+		],
+	},
+	// import the function via paths
+	functions: { addPet, findPet, deletePet, findPetWithTags },
+	resources: {
 		Resources: {
-			pettable: {
+			petpettable: {
 				Type: 'AWS::DynamoDB::Table',
+
 				Properties: {
-					TableName: 'PetTable1',
+					TableName: 'PetPetTable1',
+					BillingMode: 'PAY_PER_REQUEST',
 					AttributeDefinitions: [
 						{
 							AttributeName: 'PetID',
@@ -64,10 +77,6 @@ const serverlessConfiguration: AWS = {
 							KeyType: 'HASH',
 						},
 					],
-					ProvisionedThroughput: {
-						ReadCapacityUnits: 1,
-						WriteCapacityUnits: 1,
-					},
 				},
 			},
 		},

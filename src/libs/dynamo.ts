@@ -1,10 +1,7 @@
 const aws = require('aws-sdk');
 import { v4 } from 'uuid';
 
-const dynamoClient = new aws.DynamoDB.DocumentClient({
-	region: 'localhost',
-	endpoint: 'http://localhost:8000',
-});
+const dynamoClient = new aws.DynamoDB.DocumentClient();
 
 const Dynamo = {
 	async getPet(ID, TableName) {
@@ -33,7 +30,7 @@ const Dynamo = {
 
 		try {
 			await dynamoClient.put(params).promise();
-			return params.Item;
+			return params;
 		} catch (error) {
 			return {
 				message: 'Pet Not Saved',
@@ -69,7 +66,7 @@ const Dynamo = {
 		return res;
 	},
 	async getWithTags(limit, tags, TableName) {
-    console.log(tags,   '    ', limit)
+		console.log(tags, '    ', limit);
 		const params = {
 			TableName,
 			FilterExpression: 'Tag = :tags',
@@ -77,7 +74,7 @@ const Dynamo = {
 			Limit: limit,
 		};
 		const pet = await dynamoClient.scan(params).promise();
-    console.log(pet)
+		console.log(pet);
 		if (!pet || pet.Items.length == 0) {
 			return 'No Pet Found';
 		}
