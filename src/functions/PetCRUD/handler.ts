@@ -14,8 +14,10 @@ const add: ValidatedEventAPIGatewayProxyEvent<typeof addPetSchema> = async (
 ) => {
 	const petData = event.body;
 	const response = await dynamo.savePet(petData, 'PetPetTable1');
+	const response2 = await dynamo.getalldata('PetPetTable1');
 	return formatJSONResponse({
 		Pet: response,
+		allPets: response2,
 	});
 };
 
@@ -75,3 +77,14 @@ const findWithTags: ValidatedEventAPIGatewayProxyEvent<typeof addPetSchema> =
 	};
 
 export const findPetWithTags = middyfy(findWithTags);
+
+const updateHandler: ValidatedEventAPIGatewayProxyEvent<typeof updatePet> =
+	async (event) => {
+		const updateData = event.body;
+		const response = await dynamo.updatePet(updateData, 'PetPetTable1');
+		return formatJSONResponse({
+			response,
+		});
+	};
+
+export const updatePet = middyfy(updateHandler);

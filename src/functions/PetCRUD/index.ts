@@ -73,3 +73,17 @@ export const findPetWithTags =  {
     }
   ]
 }
+
+
+
+export const updatePet = {
+	handler: `${handlerPath(__dirname)}/handler.updatePet`,
+	events: [
+		{
+			http: {
+				method: 'put',
+				path: '/pets',
+			},
+		},
+	],
+};

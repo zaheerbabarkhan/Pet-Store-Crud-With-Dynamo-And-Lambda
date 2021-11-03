@@ -1,1 +1,7 @@
-export {addPet, findPet, deletePet, findPetWithTags} from './PetCRUD'
+export {
+	addPet,
+	findPet,
+	deletePet,
+	findPetWithTags,
+	updatePet,
+} from './PetCRUD';

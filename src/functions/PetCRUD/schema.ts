@@ -15,3 +15,14 @@ export const findPetSchema =  {
   },
   
 } as const;
+
+
+
+export const updatePet = {
+	type: 'object',
+	properties: {
+		PetID: { type: 'string' },
+		name: { type: 'string' },
+		tag: { type: 'string' },
+	},
+} as const;

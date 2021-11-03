@@ -1,6 +1,12 @@
 import type { AWS } from '@serverless/typescript';
 
-import {addPet, findPet, deletePet, findPetWithTags} from '@functions/index';
+import {
+	addPet,
+	findPet,
+	deletePet,
+	findPetWithTags,
+	updatePet,
+} from '@functions/index';
 
 const serverlessConfiguration: AWS = {
 	service: 'aws-serverless-dynamodb-crud-task',
@@ -56,7 +62,7 @@ const serverlessConfiguration: AWS = {
 		],
 	},
 	// import the function via paths
-	functions: { addPet, findPet, deletePet, findPetWithTags },
+	functions: { addPet, findPet, deletePet, findPetWithTags, updatePet },
 	resources: {
 		Resources: {
 			petpettable: {

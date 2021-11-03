@@ -1,7 +1,10 @@
 const aws = require('aws-sdk');
 import { v4 } from 'uuid';
 
-const dynamoClient = new aws.DynamoDB.DocumentClient();
+const dynamoClient = new aws.DynamoDB.DocumentClient({
+	region: 'localhost',
+	endpoint: 'http://localhost:8000',
+});
 
 const Dynamo = {
 	async getPet(ID, TableName) {
@@ -80,6 +83,26 @@ const Dynamo = {
 		}
 
 		return pet.Items;
+	},
+
+	async updatePet(data, TableName) {
+		const params = {
+			TableName,
+			Item: {
+				PetID: data.PetID,
+				Name: data.name,
+				Tag: data.tag,
+			},
+		};
+
+		try {
+			await dynamoClient.put(params).promise();
+			return params;
+		} catch (error) {
+			return {
+				message: 'Pet Not Saved',
+			};
+		}
 	},
 };
 export default Dynamo;
